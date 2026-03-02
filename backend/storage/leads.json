@@ -1,0 +1,29 @@
+{
+  "leads": [
+    {
+      "company": "Salesforce",
+      "contact": "Marc Benioff",
+      "industry": "Software",
+      "relevanceScore": 5,
+      "pitchAngle": "As a pioneer in the CRM space, Salesforce may be interested in exploring complementary solutions to enhance their existing offerings, potentially creating a strategic partnership opportunity.",
+      "dueDiligence": "Salesforce is a well-established leader in the CRM market, which may indicate a lower likelihood of adopting a new CRM solution, but their size and influence could make them a valuable partner or potential acquirer. It's essential to research their current product roadmap and potential gaps in their offerings. The company's commitment to innovation and customer success aligns with the values of a CRM platform."
+    },
+    {
+      "company": "Tesla",
+      "contact": "Elon Musk",
+      "industry": "Automotive",
+      "relevanceScore": 8,
+      "pitchAngle": "Tesla can leverage our CRM solution to streamline customer interactions and enhance the overall buying experience for their electric vehicles and energy products.",
+      "dueDiligence": "Tesla is a multinational corporation with a large customer base and multiple sales channels, making a robust CRM system essential for their operations. Their focus on innovation and customer experience aligns with the benefits of our CRM platform. Further research is needed to identify the key decision-makers and current CRM systems in use at Tesla."
+    },
+    {
+      "company": "Shopify",
+      "contact": "Tobi Lutke",
+      "industry": "E-commerce",
+      "relevanceScore": 8,
+      "pitchAngle": "Shopify can leverage our CRM solution to enhance customer relationships and drive business growth by streamlining sales, marketing, and customer service operations.",
+      "dueDiligence": "As a leading e-commerce platform, Shopify has a large customer base and a growing ecosystem of merchants, making it a good fit for a CRM solution that can cater to their diverse sales and marketing needs. With its expanding suite of services, Shopify may be looking to integrate a robust CRM system to support its own internal operations and those of its merchants. Further research is needed to determine the company's current CRM infrastructure and potential pain points."
+    }
+  ],
+  "lastUpdated": "2026-03-02T17:28:39.998Z"
+}

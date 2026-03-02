@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface AnalyzedLead {
   company: string;
@@ -15,7 +15,19 @@ export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<AnalyzedLead[]>([]);
+  const [savedLeads, setSavedLeads] = useState<AnalyzedLead[]>([]);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch('/api/leads/get')
+      .then(res => res.json())
+      .then(data => {
+        if (data.leads) {
+          setSavedLeads(data.leads);
+        }
+      })
+      .catch(err => console.error('Failed to load saved leads:', err));
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -48,11 +60,23 @@ export default function UploadPage() {
       }
 
       const { analysisId } = await response.json();
-
       const resultsResponse = await fetch(`/api/results/${analysisId}`);
       const { leads } = await resultsResponse.json();
 
       setResults(leads);
+
+      const saveResponse = await fetch('/api/leads/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leads }),
+      });
+
+      const saveData = await saveResponse.json();
+      if (saveData.success) {
+        const getResponse = await fetch('/api/leads/get');
+        const getData = await getResponse.json();
+        setSavedLeads(getData.leads);
+      }
     } catch (err) {
       setError('Analysis failed. Please try again.');
       console.error(err);
@@ -63,84 +87,37 @@ export default function UploadPage() {
 
   return (
     <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '32px', marginBottom: '24px' }}>Mychips Agentic CRM</h1>
-      
-      <div style={{ 
-        border: '2px dashed #ccc', 
-        padding: '32px', 
-        borderRadius: '8px',
-        marginBottom: '24px',
-        textAlign: 'center'
-      }}>
-        <input 
-          type="file" 
-          accept=".csv"
-          onChange={handleFileChange}
-          style={{ marginBottom: '16px' }}
-        />
-        
+      <h1 style={{ fontSize: '32px', marginBottom: '24px' }}>Mychips CRM</h1>
+      <div style={{ border: '2px dashed #ccc', padding: '32px', borderRadius: '8px', marginBottom: '24px', textAlign: 'center' }}>
+        <input type="file" accept=".csv" onChange={handleFileChange} style={{ marginBottom: '16px' }} />
         {file && <p style={{ marginBottom: '16px' }}>Selected: {file.name}</p>}
-        
-        <button 
-          onClick={handleUpload}
-          disabled={loading || !file}
-          style={{
-            padding: '12px 24px',
-            fontSize: '16px',
-            backgroundColor: loading ? '#ccc' : '#0070f3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: loading ? 'not-allowed' : 'pointer'
-          }}
-        >
+        <button onClick={handleUpload} disabled={loading || !file} style={{ padding: '12px 24px', fontSize: '16px', backgroundColor: loading ? '#ccc' : '#0070f3', color: 'white', border: 'none', borderRadius: '6px', cursor: loading ? 'not-allowed' : 'pointer' }}>
           {loading ? 'Analyzing...' : 'Upload & Analyze'}
         </button>
-
         {error && <p style={{ color: 'red', marginTop: '16px' }}>{error}</p>}
       </div>
-
       {results.length > 0 && (
-        <div>
-          <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>
-            Analysis Results ({results.length} leads)
-          </h2>
-          
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>Recent Analysis - Auto-saved!</h2>
           <div style={{ display: 'grid', gap: '16px' }}>
             {results.map((lead, index) => (
-              <div 
-                key={index}
-                style={{
-                  border: '1px solid #ddd',
-                  padding: '20px',
-                  borderRadius: '8px',
-                  backgroundColor: lead.relevanceScore >= 7 ? '#f0fff4' : '#fff'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <h3 style={{ fontSize: '20px', margin: 0 }}>{lead.company}</h3>
-                  <span style={{
-                    padding: '4px 12px',
-                    borderRadius: '12px',
-                    backgroundColor: lead.relevanceScore >= 7 ? '#22c55e' : lead.relevanceScore >= 5 ? '#eab308' : '#ef4444',
-                    color: 'white',
-                    fontWeight: 'bold'
-                  }}>
-                    Score: {lead.relevanceScore}/10
-                  </span>
-                </div>
-                
-                <p style={{ margin: '8px 0', color: '#666' }}>
-                  <strong>Contact:</strong> {lead.contact} | <strong>Industry:</strong> {lead.industry}
-                </p>
-                
-                <p style={{ margin: '8px 0', fontStyle: 'italic' }}>
-                  <strong>Pitch Angle:</strong> {lead.pitchAngle}
-                </p>
-                
-                <p style={{ margin: '8px 0', fontSize: '14px', color: '#555' }}>
-                  <strong>Due Diligence:</strong> {lead.dueDiligence}
-                </p>
+              <div key={index} style={{ border: '1px solid #ddd', padding: '20px', borderRadius: '8px', backgroundColor: lead.relevanceScore >= 7 ? '#f0fff4' : '#fff' }}>
+                <h3>{lead.company} - Score: {lead.relevanceScore}/10</h3>
+                <p>Contact: {lead.contact} | Industry: {lead.industry}</p>
+                <p>Pitch: {lead.pitchAngle}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {savedLeads.length > 0 && (
+        <div>
+          <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>All Saved Leads ({savedLeads.length})</h2>
+          <div style={{ display: 'grid', gap: '12px' }}>
+            {savedLeads.map((lead, index) => (
+              <div key={index} style={{ border: '1px solid #e5e7eb', padding: '16px', borderRadius: '6px' }}>
+                <h3>{lead.company} - {lead.relevanceScore}/10</h3>
+                <p>{lead.contact}</p>
               </div>
             ))}
           </div>
