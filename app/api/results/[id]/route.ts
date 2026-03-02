@@ -1,48 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     if (!id || id.trim() === '') {
-      return NextResponse.json({
-        error: 'Invalid analysis ID. Please provide a valid ID.'
-      }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Analysis ID is required' },
+        { status: 400 }
+      );
     }
 
-    if (!global.analysisCache) {
-      return NextResponse.json({
-        error: 'No analysis data available. Please upload and analyze a CSV file first.'
-      }, { status: 404 });
-    }
+    const dataDir = path.join(process.cwd(), 'data');
+    const filePath = path.join(dataDir, `${id}.json`);
 
-    const results = global.analysisCache[id];
+    const fileContent = await fs.readFile(filePath, 'utf-8');
+    const data = JSON.parse(fileContent);
 
-    if (!results) {
-      return NextResponse.json({
-        error: 'Analysis not found. This session may have expired. Please re-upload your CSV file.'
-      }, { status: 404 });
-    }
-
-    if (!Array.isArray(results)) {
-      return NextResponse.json({
-        error: 'Invalid analysis data format.'
-      }, { status: 500 });
-    }
-
-    return NextResponse.json({
-      results,
-      total: results.length,
-      message: `Loaded ${results.length} analyzed leads.`
-    });
-
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Results fetch error:', error);
-    return NextResponse.json({
-      error: `Failed to load results: ${error.message}`
-    }, { status: 500 });
+    if (error.code === 'ENOENT') {
+      return NextResponse.json(
+        { error: 'Analysis not found' },
+        { status: 404 }
+      );
+    }
+
+    console.error('Error loading results:', error);
+    return NextResponse.json(
+      { error: 'Failed to load analysis results' },
+      { status: 500 }
+    );
   }
 }

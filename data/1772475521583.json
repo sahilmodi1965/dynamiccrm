@@ -1,0 +1,33 @@
+{
+  "id": "1772475521583",
+  "leads": [
+    {
+      "company": "Google",
+      "contact": "John Doe",
+      "industry": "Technology",
+      "relevanceScore": 7,
+      "pitchAngle": "Personalized pitch for Google in Technology",
+      "dueDiligence": "Google is a potential lead with focus on Technology",
+      "analysis": "Analysis for Google: Strong potential in Technology sector."
+    },
+    {
+      "company": "Microsoft",
+      "contact": "Jane Smith",
+      "industry": "Software",
+      "relevanceScore": 6,
+      "pitchAngle": "Personalized pitch for Microsoft in Software",
+      "dueDiligence": "Microsoft is a potential lead with focus on Software",
+      "analysis": "Analysis for Microsoft: Strong potential in Software sector."
+    },
+    {
+      "company": "Amazon",
+      "contact": "Bob Johnson",
+      "industry": "E-commerce",
+      "relevanceScore": 5,
+      "pitchAngle": "Personalized pitch for Amazon in E-commerce",
+      "dueDiligence": "Amazon is a potential lead with focus on E-commerce",
+      "analysis": "Analysis for Amazon: Strong potential in E-commerce sector."
+    }
+  ],
+  "analyzedAt": "2026-03-02T18:18:41.583Z"
+}
