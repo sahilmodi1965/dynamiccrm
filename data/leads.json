@@ -1,0 +1,38 @@
+{
+  "leads": [
+    {
+      "id": "lead_001",
+      "firstName": "Sahil",
+      "lastName": "Raj",
+      "name": "Sahil Raj",
+      "title": "VP of Marketing",
+      "company": "TechFlow Solutions",
+      "email": "sahilraj16@gmail.com",
+      "linkedin": "https://linkedin.com/in/sahilraj",
+      "website": "https://techflow.example.com",
+      "industry": "B2B SaaS",
+      "status": "contacted",
+      "createdAt": "2025-01-15T10:00:00Z",
+      "analysis": "RELEVANCE SCORE: 8/10\n\nPITCH ANGLE:\nTechFlow Solutions is a mid-market B2B SaaS company focused on workflow automation. They likely face challenges managing partner relationships at scale. Our CRM solution can help them track partner pipelines, automate outreach to distributors, and integrate with their existing tools.\n\nCOMPETITOR CONTEXT:\nTheir competitor AutomateNow recently scaled their partner program from 50 to 200+ partners using intelligent CRM automation. TechFlow could achieve similar growth.\n\nSUCCESS CASE STUDY:\nWe helped FlowMetrics (similar size, same industry) increase partner engagement by 40% in 90 days using our automated outreach system.",
+      "contactedAt": "2026-03-03T22:11:14.702Z",
+      "emailId": "mock_email_1772575874702"
+    },
+    {
+      "id": "lead_002",
+      "firstName": "Sahil",
+      "lastName": "Modi",
+      "name": "Sahil Modi",
+      "title": "Director of Sales",
+      "company": "CloudBridge Inc",
+      "email": "modi.sahil.im@gmail.com",
+      "linkedin": "https://linkedin.com/in/sahilmodi",
+      "website": "https://cloudbridge.example.com",
+      "industry": "Cloud Infrastructure",
+      "status": "contacted",
+      "createdAt": "2025-01-15T10:30:00Z",
+      "analysis": "RELEVANCE SCORE: 9/10\n\nPITCH ANGLE:\nCloudBridge operates in the competitive cloud infrastructure space. They need a CRM that can intelligently sequence outreach to enterprise clients while avoiding duplicate touches across their sales team.\n\nCOMPETITOR CONTEXT:\nDataStream (their main competitor) recently won a major contract with IBM using AI-driven lead prioritization. CloudBridge could gain competitive advantage with similar tools.\n\nSUCCESS CASE STUDY:\nWe enabled ServerScale to reduce sales cycle time by 25% using smart lead routing and automated follow-ups.",
+      "contactedAt": "2026-03-03T22:12:09.282Z",
+      "emailId": "mock_email_1772575929282"
+    }
+  ]
+}
