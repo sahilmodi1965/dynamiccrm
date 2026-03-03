@@ -62,3 +62,4 @@ logs/
 # CSV uploads (lead data)
 uploads/
 temp/
+data/google-tokens.json
