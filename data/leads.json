@@ -14,8 +14,35 @@
       "status": "contacted",
       "createdAt": "2025-01-15T10:00:00Z",
       "analysis": "RELEVANCE SCORE: 8/10\n\nPITCH ANGLE:\nTechFlow Solutions is a mid-market B2B SaaS company focused on workflow automation. They likely face challenges managing partner relationships at scale. Our CRM solution can help them track partner pipelines, automate outreach to distributors, and integrate with their existing tools.\n\nCOMPETITOR CONTEXT:\nTheir competitor AutomateNow recently scaled their partner program from 50 to 200+ partners using intelligent CRM automation. TechFlow could achieve similar growth.\n\nSUCCESS CASE STUDY:\nWe helped FlowMetrics (similar size, same industry) increase partner engagement by 40% in 90 days using our automated outreach system.",
-      "contactedAt": "2026-03-03T22:11:14.702Z",
-      "emailId": "mock_email_1772575874702"
+      "contactedAt": "2025-02-27T10:00:00Z",
+      "emailId": "mock_email_old",
+      "sequencePosition": 1,
+      "companyGroup": "techflow solutions",
+      "replied": false,
+      "lastContactedAt": "2025-02-27T10:00:00Z",
+      "assignedSalesperson": "sales@example.com"
+    },
+    {
+      "id": "lead_001b",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "name": "Jane Smith",
+      "title": "CTO",
+      "company": "TechFlow Solutions",
+      "email": "jane@techflow.example.com",
+      "linkedin": "https://linkedin.com/in/janesmith",
+      "website": "https://techflow.example.com",
+      "industry": "B2B SaaS",
+      "status": "replied",
+      "createdAt": "2025-01-15T11:00:00Z",
+      "analysis": "RELEVANCE SCORE: 9/10\n\nPITCH ANGLE:\nAs CTO, Jane would appreciate the technical integration capabilities of our CRM with existing tech stacks.\n\nCOMPETITOR CONTEXT:\nAutomateNow's technical leadership drove their CRM adoption.\n\nSUCCESS CASE STUDY:\nOur API-first approach helped TechScale integrate in 2 weeks.",
+      "sequencePosition": 2,
+      "companyGroup": "techflow solutions",
+      "replied": true,
+      "lastContactedAt": "2026-03-03T22:26:43.981Z",
+      "assignedSalesperson": "sales@mychips.com",
+      "contactedAt": "2026-03-03T22:26:43.981Z",
+      "emailId": "email_1772576803980_lead_001b"
     },
     {
       "id": "lead_002",
@@ -32,7 +59,12 @@
       "createdAt": "2025-01-15T10:30:00Z",
       "analysis": "RELEVANCE SCORE: 9/10\n\nPITCH ANGLE:\nCloudBridge operates in the competitive cloud infrastructure space. They need a CRM that can intelligently sequence outreach to enterprise clients while avoiding duplicate touches across their sales team.\n\nCOMPETITOR CONTEXT:\nDataStream (their main competitor) recently won a major contract with IBM using AI-driven lead prioritization. CloudBridge could gain competitive advantage with similar tools.\n\nSUCCESS CASE STUDY:\nWe enabled ServerScale to reduce sales cycle time by 25% using smart lead routing and automated follow-ups.",
       "contactedAt": "2026-03-03T22:12:09.282Z",
-      "emailId": "mock_email_1772575929282"
+      "emailId": "mock_email_1772575929282",
+      "sequencePosition": 1,
+      "companyGroup": "cloudbridge inc",
+      "replied": false,
+      "lastContactedAt": "2026-03-03T22:12:09.282Z",
+      "assignedSalesperson": null
     }
   ]
 }

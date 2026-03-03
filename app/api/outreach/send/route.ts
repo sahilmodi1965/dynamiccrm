@@ -1,61 +1,81 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import fs from 'fs/promises'
 import path from 'path'
-import { generateOutreachEmail } from '@/app/lib/emailGenerator'
-import { sendEmailViaGmail } from '@/app/lib/gmailSender'
+import { getNextLeadToContact, markLeadAsContacted } from '@/app/lib/sequencingEngine'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const { leadId } = await request.json()
+    const body = await request.json()
+    const { leadId, salesperson } = body
 
-    if (!leadId) {
-      return NextResponse.json({ error: 'Lead ID required' }, { status: 400 })
+    if (!leadId || !salesperson) {
+      return NextResponse.json({ 
+        error: 'Missing leadId or salesperson' 
+      }, { status: 400 })
     }
 
-    // Load leads
+    // Load lead data
     const leadsPath = path.join(process.cwd(), 'data', 'leads.json')
     const leadsData = JSON.parse(await fs.readFile(leadsPath, 'utf-8'))
     const lead = leadsData.leads.find((l: any) => l.id === leadId)
 
     if (!lead) {
-      return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
+      return NextResponse.json({ 
+        error: 'Lead not found' 
+      }, { status: 404 })
     }
 
-    if (!lead.email) {
-      return NextResponse.json({ error: 'Lead has no email address' }, { status: 400 })
+    // Check if this lead should be contacted (sequencing rules)
+    const nextLeads = await getNextLeadToContact(lead.companyGroup)
+    const isEligible = nextLeads.some((l: any) => l.id === leadId)
+
+    if (!isEligible) {
+      return NextResponse.json({ 
+        error: 'Lead not eligible for contact yet',
+        reason: 'Either previous contact in sequence needs more time, or someone already replied'
+      }, { status: 400 })
     }
 
-    // Generate personalized email with AI
-    console.log(`Generating email for ${lead.name} at ${lead.company}...`)
-    const emailBody = await generateOutreachEmail(lead)
+    // Generate personalized email
+    const emailSubject = `Partnership Opportunity for ${lead.company}`
+    const emailBody = `Hi ${lead.firstName},
 
-    // Extract subject line (AI should include it, but fallback to generic)
-    const subject = `Partnership opportunity for ${lead.company}`
+I noticed ${lead.company} is in the ${lead.industry} space. ${lead.analysis.split('\n\n')[1].replace('PITCH ANGLE:\n', '')}
 
-    // Send via Gmail
-    console.log(`Sending email to ${lead.email}...`)
-    const gmailResult = await sendEmailViaGmail(lead.email, subject, emailBody)
+${lead.analysis.split('\n\n')[2].replace('COMPETITOR CONTEXT:\n', '')}
 
-    // Update lead status
-    lead.status = 'contacted'
-    lead.contactedAt = new Date().toISOString()
-    lead.emailId = gmailResult.id
+${lead.analysis.split('\n\n')[3].replace('SUCCESS CASE STUDY:\n', '')}
 
-    await fs.writeFile(leadsPath, JSON.stringify(leadsData, null, 2))
+Would you be open to a quick call next week?
 
-    return NextResponse.json({ 
+Best regards,
+${salesperson}`
+
+    // Simulate sending email (mock Gmail API call)
+    const mockEmailId = `email_${Date.now()}_${leadId}`
+    
+    console.log('--- EMAIL SENT ---')
+    console.log('To:', lead.email)
+    console.log('Subject:', emailSubject)
+    console.log('Body:', emailBody)
+    console.log('------------------')
+
+    // Mark lead as contacted
+    await markLeadAsContacted(leadId, mockEmailId, salesperson)
+
+    return NextResponse.json({
       success: true,
       message: 'Email sent successfully',
-      leadId,
-      emailPreview: emailBody.substring(0, 100) + '...',
-      gmailId: gmailResult.id
+      emailId: mockEmailId,
+      leadName: lead.name,
+      company: lead.company,
+      sequencePosition: lead.sequencePosition
     })
-
   } catch (error: any) {
-    console.error('Outreach send error:', error)
+    console.error('Email send error:', error)
     return NextResponse.json({ 
       error: 'Failed to send email',
-      details: error.message 
+      details: error.message
     }, { status: 500 })
   }
 }
