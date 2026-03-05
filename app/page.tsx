@@ -1,55 +1,106 @@
-import Link from 'next/link';
+'use client'
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ auth?: string }>;
-}) {
-  const params = await searchParams;
-  const authStatus = params.auth;
+import { useState } from 'react'
+
+export default function Home() {
+  const [file, setFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string>('')
+
+  const handleUpload = async () => {
+    if (!file) {
+      setError('Please select a file')
+      return
+    }
+
+    setUploading(true)
+    setError('')
+    setResult(null)
+
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('source', 'csv_upload')
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || 'Upload failed')
+      } else {
+        setResult(data)
+      }
+    } catch (err: any) {
+      setError(err.message || 'Upload failed')
+    } finally {
+      setUploading(false)
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
-      <div className="text-center max-w-2xl">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Mychips Agentic CRM
-        </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          AI-powered lead intelligence & intelligent outreach
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">Upload Leads</h1>
+        <p className="text-gray-600 mb-8">Upload any CSV file - we'll handle the rest</p>
 
-        {authStatus === 'success' && (
-          <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-            ✅ Gmail connected successfully! You can now access your inbox.
-          </div>
-        )}
-        
-        {authStatus === 'failed' && (
-          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
-            ❌ Authentication failed. Please try again.
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+            ⚠️ {error}
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-          <Link 
-            href="/api/auth/login"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-blue-600 hover:bg-blue-50 transition"
+        {result && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">
+            ✅ {result.message}
+            <div className="text-sm mt-2">
+              Detected columns: {result.columns_detected?.join(', ')}
+            </div>
+          </div>
+        )}
+
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <input
+            type="file"
+            accept=".csv"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="block w-full text-sm text-gray-600 mb-4
+              file:mr-4 file:py-2 file:px-4
+              file:rounded file:border-0
+              file:bg-indigo-50 file:text-indigo-700
+              hover:file:bg-indigo-100 cursor-pointer"
+          />
+
+          {file && (
+            <p className="text-sm text-gray-600 mb-4">
+              Selected: {file.name} ({(file.size / 1024).toFixed(1)} KB)
+            </p>
+          )}
+
+          <button
+            onClick={handleUpload}
+            disabled={!file || uploading}
+            className="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold
+              hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed
+              transition-colors"
           >
-            🔐 Connect Gmail
-          </Link>
-          
-          <Link 
-            href="/upload"
-            className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
-          >
-            📤 Upload Leads
-          </Link>
+            {uploading ? 'Uploading...' : 'Upload & Ingest'}
+          </button>
         </div>
 
-        <div className="text-sm text-gray-500">
-          Connect your Gmail to enable intelligent outreach
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="font-semibold text-blue-900 mb-2">What happens next:</h3>
+          <ul className="text-sm text-blue-800 space-y-1">
+            <li>✓ All data ingested as-is (no validation)</li>
+            <li>✓ Stored in raw_leads table</li>
+            <li>✓ Ready for AI processing in next milestone</li>
+          </ul>
         </div>
       </div>
     </div>
-  );
+  )
 }

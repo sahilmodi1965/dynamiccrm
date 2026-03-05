@@ -1,47 +1,51 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import Papa from 'papaparse';
+import { deduplicateCompanies } from '@/lib/fuzzy-match';
+import { calculateHierarchyScore } from '@/backend/hierarchy';
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const formData = await request.formData();
+    const formData = await req.formData();
     const file = formData.get('file') as File;
-    
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    }
+    if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 });
 
     const text = await file.text();
-    const lines = text.split('\n').filter(line => line.trim());
-    const headers = lines[0].split(',').map(h => h.trim());
+    // skipEmptyLines and header: true handle the worst of the dirty data
+    const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
     
-    const leads = lines.slice(1).map(line => {
-      const values = line.split(',').map(v => v.trim());
-      const lead: any = {};
-      headers.forEach((header, i) => {
-        lead[header] = values[i] || '';
-      });
-      lead.id = Math.random().toString(36).substr(2, 9);
-      lead.uploadedAt = new Date().toISOString();
-      lead.status = 'new';
-      return lead;
+    // Normalize dirty column names (handles 'Company', 'company', 'Company Name', etc.)
+    const rawLeads = parsed.data.map((row: any) => ({
+      companyName: row.company || row.Company || row['Company Name'] || row.Organization || '',
+      contactName: row.name || row.Name || row.Contact || row['First Name'] || '',
+      email: row.email || row.Email || '',
+      title: row.title || row.Title || row.JobTitle || row['Job Title'] || '',
+      domain: row.domain || row.Domain || row.Website || ''
+    })).filter((l: any) => l.companyName || l.email); // Drop completely empty rows
+
+    // M2: Fuzzy Match & Deduplicate (85% threshold)
+    const companies = deduplicateCompanies(rawLeads, 0.15);
+
+    // M5: Apply Hierarchy & Identify Decision Makers
+    const processedCompanies = companies.map(company => {
+      const scoredContacts = company.contacts.map(c => ({
+        ...c,
+        ...calculateHierarchyScore(c.title)
+      })).sort((a, b) => b.score - a.score); // Primary contacts float to the top
+
+      // M4 Placeholder: We would map to 'our top publishers.csv' categories here
+      const relevanceScore = Math.floor(Math.random() * 40) + 60; // Mock 60-100 score
+
+      return { 
+        ...company, 
+        contacts: scoredContacts,
+        primaryContact: scoredContacts[0],
+        relevanceScore
+      };
     });
 
-    // Deduplicate by email
-    const existing = JSON.parse(fs.readFileSync('data/leads.json', 'utf-8'));
-    const existingEmails = new Set(existing.map((l: any) => l.email));
-    const newLeads = leads.filter(l => !existingEmails.has(l.email));
-    
-    const updated = [...existing, ...newLeads];
-    fs.writeFileSync('data/leads.json', JSON.stringify(updated, null, 2));
-
-    return NextResponse.json({
-      success: true,
-      uploaded: newLeads.length,
-      duplicates: leads.length - newLeads.length,
-      total: updated.length
-    });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ success: true, companies: processedCompanies });
+  } catch (e: any) {
+    console.error("Upload pipeline failed:", e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
