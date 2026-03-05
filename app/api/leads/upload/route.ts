@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       };
     });
 
-    return NextResponse.json({ success: true, companies: processedCompanies });
+    return NextResponse.json({ success: true, stats: { uploaded: rawLeads.length, uniqueCompanies: processedCompanies.length, duplicatesFlagged: rawLeads.length - processedCompanies.length }, companies: processedCompanies });
   } catch (e: any) {
     console.error("Upload pipeline failed:", e);
     return NextResponse.json({ error: e.message }, { status: 500 });
