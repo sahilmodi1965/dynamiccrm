@@ -1,6 +1,34 @@
 {
   "leads": [
     {
+      "id": "lead_001b",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "name": "Jane Smith",
+      "title": "CTO",
+      "company": "TechFlow Solutions",
+      "email": "jane@techflow.example.com",
+      "linkedin": "https://linkedin.com/in/janesmith",
+      "website": "https://techflow.example.com",
+      "industry": "B2B SaaS",
+      "status": "replied",
+      "createdAt": "2025-01-15T11:00:00Z",
+      "analysis": "RELEVANCE SCORE: 9/10\n\nPITCH ANGLE:\nAs CTO, Jane would appreciate the technical integration capabilities of our CRM with existing tech stacks.\n\nCOMPETITOR CONTEXT:\nAutomateNow's technical leadership drove their CRM adoption.\n\nSUCCESS CASE STUDY:\nOur API-first approach helped TechScale integrate in 2 weeks.",
+      "sequencePosition": 1,
+      "companyGroup": "techflow solutions",
+      "replied": true,
+      "lastContactedAt": "2026-03-03T22:26:43.981Z",
+      "assignedSalesperson": "sales@mychips.com",
+      "contactedAt": "2026-03-03T22:26:43.981Z",
+      "emailId": "email_1772576803980_lead_001b",
+      "hierarchyScore": 100,
+      "hierarchyLevel": "C-Level",
+      "isDecisionMaker": true,
+      "score": 100,
+      "level": "C-Level",
+      "sequenceStartedAt": "2026-03-05T09:48:50.611Z"
+    },
+    {
       "id": "lead_001",
       "firstName": "Sahil",
       "lastName": "Raj",
@@ -20,29 +48,10 @@
       "companyGroup": "techflow solutions",
       "replied": false,
       "lastContactedAt": "2025-02-27T10:00:00Z",
-      "assignedSalesperson": "sales@example.com"
-    },
-    {
-      "id": "lead_001b",
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "name": "Jane Smith",
-      "title": "CTO",
-      "company": "TechFlow Solutions",
-      "email": "jane@techflow.example.com",
-      "linkedin": "https://linkedin.com/in/janesmith",
-      "website": "https://techflow.example.com",
-      "industry": "B2B SaaS",
-      "status": "replied",
-      "createdAt": "2025-01-15T11:00:00Z",
-      "analysis": "RELEVANCE SCORE: 9/10\n\nPITCH ANGLE:\nAs CTO, Jane would appreciate the technical integration capabilities of our CRM with existing tech stacks.\n\nCOMPETITOR CONTEXT:\nAutomateNow's technical leadership drove their CRM adoption.\n\nSUCCESS CASE STUDY:\nOur API-first approach helped TechScale integrate in 2 weeks.",
-      "sequencePosition": 2,
-      "companyGroup": "techflow solutions",
-      "replied": true,
-      "lastContactedAt": "2026-03-03T22:26:43.981Z",
-      "assignedSalesperson": "sales@mychips.com",
-      "contactedAt": "2026-03-03T22:26:43.981Z",
-      "emailId": "email_1772576803980_lead_001b"
+      "assignedSalesperson": "sales@example.com",
+      "hierarchyScore": 80,
+      "hierarchyLevel": "VP",
+      "isDecisionMaker": true
     },
     {
       "id": "lead_002",
@@ -64,7 +73,10 @@
       "companyGroup": "cloudbridge inc",
       "replied": false,
       "lastContactedAt": "2026-03-03T22:12:09.282Z",
-      "assignedSalesperson": null
+      "assignedSalesperson": null,
+      "hierarchyScore": 100,
+      "hierarchyLevel": "C-Level",
+      "isDecisionMaker": true
     }
   ]
 }

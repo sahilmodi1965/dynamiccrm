@@ -1,0 +1,11 @@
+company,name,email,title,linkedin,industry
+TechCorp,John Smith,john@example.com,VP Marketing,linkedin.com/john,AdTech
+TechCorp,Sarah Johnson,sarah@example.com,CMO,linkedin.com/sarah,AdTech
+TechCorp,Mike Davis,mike@example.com,Marketing Director,linkedin.com/mike,AdTech
+MediaHub,Lisa Chen,lisa@example.com,Head of Partnerships,linkedin.com/lisa,Media
+MediaHub,Tom Wilson,tom@example.com,VP Sales,linkedin.com/tom,Media
+AdNetwork,Emma Brown,emma@example.com,CEO,linkedin.com/emma,AdTech
+AdNetwork,David Lee,david@example.com,CTO,linkedin.com/david,AdTech
+PublisherPro,Anna White,anna@example.com,Director of Monetization,linkedin.com/anna,Publishing
+PublisherPro,James Green,james@example.com,Head of Ad Ops,linkedin.com/james,Publishing
+ContentCo,Maria Garcia,maria@example.com,VP Revenue,linkedin.com/maria,Media
