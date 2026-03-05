@@ -18,7 +18,8 @@ export async function POST() {
       success: true,
       message: 'Leads ranked by hierarchy',
       totalLeads: rankedLeads.length,
-      decisionMakers: rankedLeads.filter((l: any) => l.isDecisionMaker).length
+      decisionMakers: rankedLeads.filter((l: any) => l.isDecisionMaker).length,
+      ranked: rankedLeads
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
