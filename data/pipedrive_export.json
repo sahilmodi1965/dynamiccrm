@@ -1,0 +1,16 @@
+{
+  "deals": [
+    {
+      "id": "deal_001",
+      "company": "TechFlow Solutions",
+      "stage": "live",
+      "value": 50000
+    },
+    {
+      "id": "deal_002",
+      "company": "DataCorp Inc",
+      "stage": "io_stage",
+      "value": 75000
+    }
+  ]
+}

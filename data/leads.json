@@ -13,7 +13,7 @@
       "industry": "B2B SaaS",
       "status": "replied",
       "createdAt": "2025-01-15T11:00:00Z",
-      "analysis": "RELEVANCE SCORE: 9/10\n\nPITCH ANGLE:\nAs CTO, Jane would appreciate the technical integration capabilities of our CRM with existing tech stacks.\n\nCOMPETITOR CONTEXT:\nAutomateNow's technical leadership drove their CRM adoption.\n\nSUCCESS CASE STUDY:\nOur API-first approach helped TechScale integrate in 2 weeks.",
+      "analysis": "Based on the provided lead information, here's the analysis:\n\n1. **Relevance score (1-10): 8**\nThe lead is a CTO at a B2B SaaS company, which indicates a high level of relevance for CRM outreach. CTOs are typically involved in technology decisions and have a deep understanding of the company's infrastructure and operations. The B2B SaaS industry is also a prime target for CRM solutions, as these companies often rely on customer relationships to drive revenue.\n\n2. **Best pitch angle for their role:**\nAs a CTO, this individual is likely concerned with the technical aspects of CRM implementation, integration, and scalability. A suitable pitch angle could be:\n\"Maximize your technology stack's potential with our CRM solution, designed to seamlessly integrate with your existing infrastructure and provide a single, unified view of customer interactions. Our solution can help you streamline processes, enhance data-driven decision-making, and drive business growth through improved customer relationships.\"\n\nThis angle speaks to the CTO's technical expertise and highlights the benefits of a well-integrated CRM system.\n\n3. **Relevant competitor context:**\nSome notable competitors in the B2B SaaS CRM space include:\n* Salesforce\n* HubSpot\n* Zoho CRM\n* Copper\n* Pipedrive\n\nWhen reaching out to the CTO of TechFlow Solutions, it's essential to understand how your CRM solution differentiates itself from these competitors. You may want to emphasize your unique features, such as advanced analytics, AI-driven insights, or industry-specific customizations.\n\n4. **Success case study angle:**\nTo resonate with the CTO, it's crucial to provide a success story that highlights the technical and business benefits of your CRM solution. A possible case study angle could be:\n\"Company X, a similar B2B SaaS provider, implemented our CRM solution to streamline their sales and customer success processes. As a result, they achieved:\n* 30% reduction in sales cycle length\n* 25% increase in customer retention\n* 20% improvement in sales forecasting accuracy\n* Seamless integration with their existing tech stack, including [specific tools or platforms]\n\nThis success story demonstrates how your CRM solution can drive tangible business results and technical benefits, making it more relatable and compelling to the CTO of TechFlow Solutions.",
       "sequencePosition": 1,
       "companyGroup": "techflow solutions",
       "replied": true,
@@ -26,7 +26,9 @@
       "isDecisionMaker": true,
       "score": 100,
       "level": "C-Level",
-      "sequenceStartedAt": "2026-03-05T09:48:50.611Z"
+      "sequenceStartedAt": "2026-03-05T09:48:50.611Z",
+      "excluded": true,
+      "exclusionReason": "Existing partner in mature stage"
     },
     {
       "id": "lead_001",
@@ -51,7 +53,9 @@
       "assignedSalesperson": "sales@example.com",
       "hierarchyScore": 80,
       "hierarchyLevel": "VP",
-      "isDecisionMaker": true
+      "isDecisionMaker": true,
+      "excluded": true,
+      "exclusionReason": "Existing partner in mature stage"
     },
     {
       "id": "lead_002",
@@ -76,7 +80,9 @@
       "assignedSalesperson": null,
       "hierarchyScore": 100,
       "hierarchyLevel": "C-Level",
-      "isDecisionMaker": true
+      "isDecisionMaker": true,
+      "excluded": false,
+      "exclusionReason": null
     }
   ]
 }
