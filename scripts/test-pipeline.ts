@@ -1,64 +1,128 @@
-import Papa from 'papaparse';
-import { deduplicateCompanies } from '../app/lib/fuzzy-match';
-import { calculateHierarchyScore } from '../backend/hierarchy';
-import { filterPipedriveExclusions } from '../app/lib/pipedrive';
-import { calculateRelevance } from '../app/lib/scoring';
+import Fuse from 'fuse.js';
+import { calculateHierarchyScore } from '../lib/hierarchy';
 
-// Raw, unedited strings straight from your uploaded vendor CSVs
-const dirtyCSV = `First Name,Last Name,Title,Company Name,Email,Person Linkedin Url,Website,Secondary Email
-Elsa,Saquilayan,Team Lead Manager,Atlas,elsas@atlasfin.com,link,https://atlasfin.com,
-Vetri,Balaji,Co-Founder & CTO,Atlas,vetri@atlasfin.com,link,https://atlasfin.com,
-Latoria,Williams,Chief Executive Officer,1F Cash Advance,latoria.williams@1firstcashadvance.org,link,1firstcashadvance.org,
-Peter,Choi,CEO,Superblock,peter@superblock.xyz,link,superblock.xyz,
-Nadine,Herrmann,Managing Director,mycashbacks GmbH,nadine.herrmann@mycashbacks.com,link,mycashbacks.com,`;
+interface RawLead {
+  contactName: string;
+  title: string;
+  company: string;
+  email: string;
+}
 
-async function runTest() {
-  console.log("📥 1. INGESTING DIRTY CSV...");
-  const parsed = Papa.parse(dirtyCSV, { header: true, skipEmptyLines: true });
+interface ScoredContact {
+  name: string;
+  title: string;
+  score: number;
+  level: string;
+  department: string;
+}
+
+interface CompanyGroup {
+  normalizedName: string;
+  contacts: RawLead[];
+}
+
+// Helper: normalize company name
+function normalizeCompanyName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+    .replace(/\b(inc|llc|ltd|corp|corporation|company|co)\b/gi, '')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+// Helper: check if two names are duplicates
+function isDuplicate(a: string, b: string): boolean {
+  const fuse = new Fuse([{ name: a }], { keys: ['name'], threshold: 0.3 });
+  return fuse.search(b).length > 0;
+}
+
+// Helper: group contacts by company
+function groupContactsByCompany(leads: RawLead[]): CompanyGroup[] {
+  const groups: Map<string, RawLead[]> = new Map();
   
-  // Mapping the messy vendor headers to our schema
-  const rawLeads = parsed.data.map((row: any) => ({
-    companyName: row['Company Name'] || '',
-    contactName: `${row['First Name']} ${row['Last Name']}`.trim(),
-    email: row['Email'] || '',
-    title: row['Title'] || '',
-    domain: row['Website'] || ''
+  leads.forEach(lead => {
+    const normalized = normalizeCompanyName(lead.company);
+    let matchedKey: string | null = null;
+    
+    for (const key of groups.keys()) {
+      if (isDuplicate(key, normalized)) {
+        matchedKey = key;
+        break;
+      }
+    }
+    
+    if (matchedKey) {
+      groups.get(matchedKey)!.push(lead);
+    } else {
+      groups.set(normalized, [lead]);
+    }
+  });
+  
+  return Array.from(groups.entries()).map(([name, contacts]) => ({
+    normalizedName: name,
+    contacts
   }));
+}
 
-  console.log("🧩 2. M2: FUZZY DEDUPLICATION...");
-  const companies = deduplicateCompanies(rawLeads, 0.15);
+// Sample test data
+const testLeads: RawLead[] = [
+  { contactName: "John Smith", title: "CEO", company: "Acme Corp", email: "john@acme.com" },
+  { contactName: "Jane Doe", title: "VP Sales", company: "Acme Corporation", email: "jane@acme.com" },
+  { contactName: "Bob Wilson", title: "Director of Marketing", company: "ACME", email: "bob@acme.com" },
+  { contactName: "Alice Brown", title: "Sales Manager", company: "TechStart Inc", email: "alice@techstart.com" },
+  { contactName: "Charlie Davis", title: "CTO", company: "Tech Start", email: "charlie@techstart.com" },
+  { contactName: "Eve Johnson", title: "Account Executive", company: "BigCo LLC", email: "eve@bigco.com" },
+];
 
-  console.log("🛡️  3. M3: PIPEDRIVE EXCLUSION...");
-  // Injecting Superblock exactly as it appears in your CRM import.csv
-  const activeDeals = [{ company: 'Superblock', stage: '🤙 Live', value: '3000', owner: 'Josh Jang' }];
-  const filteredCompanies = filterPipedriveExclusions(companies, activeDeals);
+// Simulated Pipedrive exclusions
+const pipedriveExclusions = ["Acme Corp", "acme corporation"];
 
-  console.log("🧠 4. M4 & M5: SCORING AND HIERARCHY EVALUATION...\n");
-  
-  const finalOutput = filteredCompanies.map(company => {
-    // M4: Simulate website scrape / domain scoring
-    const relevance = calculateRelevance(company.normalizedName, company.domain, 'cashback and rewards surveys');
+async function runPipelineTest(): Promise<void> {
+  console.log("\x1b[1;36m━━━ PIPELINE TEST ━━━\x1b[0m\n");
 
-    // M5: Hierarchy & Department sorting
-    const scoredContacts = company.contacts.map(c => ({
+  // M2: Normalize and group
+  console.log("Step 1: Normalizing company names...");
+  const companies = groupContactsByCompany(testLeads);
+  console.log(`Found ${companies.length} unique companies from ${testLeads.length} contacts\n`);
+
+  // M3: Check exclusions
+  console.log("Step 2: Checking Pipedrive exclusions...");
+  const filteredCompanies = companies.filter(company => {
+    const isExcluded = pipedriveExclusions.some(exc => 
+      isDuplicate(company.normalizedName, normalizeCompanyName(exc))
+    );
+    if (isExcluded) {
+      console.log(`  Excluded: ${company.normalizedName}`);
+    }
+    return !isExcluded;
+  });
+  console.log(`${filteredCompanies.length} companies remaining after exclusions\n`);
+
+  // M5: Score and rank contacts
+  console.log("Step 3: Scoring contact hierarchy...");
+  const results = filteredCompanies.map(company => {
+    const scoredContacts: ScoredContact[] = company.contacts.map((c: RawLead) => ({
       name: c.contactName,
       title: c.title,
       ...calculateHierarchyScore(c.title)
-    })).sort((a, b) => b.score - a.score);
+    })).sort((a: ScoredContact, b: ScoredContact) => b.score - a.score);
 
+    const topContact = scoredContacts[0];
     return {
-      Company: company.normalizedName,
-      Status: company.status,
-      RelevanceScore: relevance.score,
-      Category: relevance.category,
-      PrimaryContact: scoredContacts[0]?.name,
-      Level: scoredContacts[0]?.level,
-      Dept: scoredContacts[0]?.department,
-      ContactsExtracted: scoredContacts.length
+      company: company.normalizedName,
+      topContact: topContact.name,
+      title: topContact.title,
+      score: topContact.score,
+      level: topContact.level
     };
   });
 
-  console.table(finalOutput);
+  // Display results
+  console.log("\n\x1b[1;32m━━━ RESULTS ━━━\x1b[0m");
+  console.table(results);
+
+  console.log("\n Pipeline test complete!");
 }
 
-runTest();
+runPipelineTest().catch(console.error);

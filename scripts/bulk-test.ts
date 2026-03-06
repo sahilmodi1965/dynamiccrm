@@ -55,11 +55,11 @@ async function runBulkTest() {
   console.log("🧠 Running M4 & M5: Relevance Scoring and Hierarchy Assessment...");
   const finalOutput = filteredCompanies.map(company => {
     const relevance = calculateRelevance(company.normalizedName, company.domain, 'cashback rewards');
-    const scoredContacts = company.contacts.map(c => ({
+    const scoredContacts = company.contacts.map((c: { contactName: string; title: string }) => ({
       name: c.contactName,
       title: c.title,
       ...calculateHierarchyScore(c.title)
-    })).sort((a, b) => b.score - a.score);
+    })).sort((a: { score: number }, b: { score: number }) => b.score - a.score);
 
     return {
       Company: company.normalizedName.substring(0, 20),
@@ -76,13 +76,13 @@ async function runBulkTest() {
   const availableCount = finalOutput.filter(c => c.Status.includes('Available')).length;
   const excludedCount = finalOutput.filter(c => c.Status.includes('Excluded')).length;
 
-  console.log("\n\033[1;32m━━━ PIPELINE RESULTS ━━━\033[0m");
+  console.log("\n\x1b[1;32m━━━ PIPELINE RESULTS ━━━\x1b[0m");
   console.log(`Total Contacts Ingested: ${rawLeads.length}`);
   console.log(`Unique Companies Found (M2): ${companies.length}`);
   console.log(`Companies Excluded (M3): ${excludedCount}`);
   console.log(`Companies Ready for Outreach: ${availableCount}`);
   
-  console.log("\n\033[1;36m━━━ SAMPLE OF PROCESSED COMPANIES (Top 15) ━━━\033[0m");
+  console.log("\n\x1b[1;36m━━━ SAMPLE OF PROCESSED COMPANIES (Top 15) ━━━\x1b[0m");
   console.table(finalOutput.slice(0, 15));
 }
 

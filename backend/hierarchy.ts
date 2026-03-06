@@ -44,3 +44,40 @@ export function calculateHierarchyScore(title: string): HierarchyScore {
 
   return { score: 10, level: 'Individual Contributor', department: foundDepartment, isDecisionMaker: false };
 }
+
+export interface Lead {
+  firstName?: string
+  lastName?: string
+  email: string
+  company: string
+  title?: string
+  hierarchyScore?: number
+  [key: string]: any
+}
+
+export function rankLeadsByHierarchy(leads: Lead[]): Lead[] {
+  return leads
+    .map(lead => ({
+      ...lead,
+      hierarchyScore: calculateHierarchyScore(lead.title || '').score
+    }))
+    .sort((a, b) => (b.hierarchyScore || 0) - (a.hierarchyScore || 0))
+}
+
+export function getTopContactPerCompany(leads: Lead[]): Lead[] {
+  const companyMap = new Map<string, Lead>()
+  
+  for (const lead of leads) {
+    const company = lead.company?.toLowerCase().trim()
+    if (company === undefined || company === '') continue
+    
+    const score = calculateHierarchyScore(lead.title || '').score
+    const existing = companyMap.get(company)
+    
+    if (existing === undefined || score > (existing.hierarchyScore || 0)) {
+      companyMap.set(company, { ...lead, hierarchyScore: score })
+    }
+  }
+  
+  return Array.from(companyMap.values())
+}
