@@ -1,0 +1,29 @@
+* 2026-03-06 02:53:29 +0400 | 0ceec4b | Sahil Modi |  (HEAD -> main) | Sprint 11 (Audit): Tighten M2-M4. Implement real Pipedrive exclusion filter, Relevance Scoring engine, and M2 stat tracking.
+* 2026-03-06 02:53:29 +0400 | f557527 | Sahil Modi |  | Sprint 11 (Patch): Fix M5 hierarchy path and complete DNC UI.
+* 2026-03-06 02:49:56 +0400 | 2a93eb8 | Sahil Modi |  | Sprint 11: Wrap M2-M5. Ship dirty CSV upload pipeline, PapaParse integration, fuzzy deduplication, and M5 Decision Maker UI components.
+* 2026-03-05 18:11:30 +0400 | e9f2bba | Sahil Modi |  (origin/main) | test: webhook source fix
+* 2026-03-05 18:03:25 +0400 | dfd71ee | Sahil Modi |  | test: board push card
+* 2026-03-05 16:44:57 +0400 | 9072a1a | Sahil Modi |  | test push
+* 2026-03-05 15:20:32 +0400 | 1539fea | Sahil Modi |  | final webhook test
+* 2026-03-05 15:15:20 +0400 | b4075a6 | Sahil Modi |  | webhook final test
+* 2026-03-05 15:08:31 +0400 | de9eedc | Sahil Modi |  | webhook test 3
+* 2026-03-05 15:06:42 +0400 | 0971fae | Sahil Modi |  | webhook test 2
+* 2026-03-05 15:05:43 +0400 | 85f5cfd | Sahil Modi |  | webhook test 2
+* 2026-03-05 15:05:28 +0400 | b05e73c | Sahil Modi |  | webhook test 2
+* 2026-03-05 15:04:04 +0400 | f0a2767 | Sahil Modi |  | test webhook after fix
+* 2026-03-05 14:55:04 +0400 | 18405cd | Sahil Modi |  | test webhook
+* 2026-03-05 14:51:19 +0400 | 27ac24d | Sahil Modi |  | test webhook
+* 2026-03-05 14:38:10 +0400 | 9f23122 | Sahil Modi |  | Complete M5: Contact Hierarchy & Decision Maker Identification
+* 2026-03-05 14:28:29 +0400 | a8d18c5 | Sahil Modi |  | Complete M9: Contact Hierarchy & Decision Maker Identification with full sequencing logic
+* 2026-03-05 14:20:08 +0400 | a4d6d33 | Sahil Modi |  | Fix: Update Groq model to llama-3.3-70b-versatile, add Pipedrive sample data
+* 2026-03-05 13:56:42 +0400 | b0a031b | Sahil Modi |  | Backfill M1-M6: Upload, AI Analysis, Pipedrive Exclusion APIs
+* 2026-03-05 13:49:40 +0400 | c4a66dc | Sahil Modi |  | Complete M9: Contact Hierarchy & Decision Maker Identification
+* 2026-03-04 02:29:39 +0400 | 10b54f1 | Sahil Modi |  | Complete M8: Intelligent Outreach Sequencing
+* 2026-03-04 02:13:56 +0400 | 0f54dcc | Sahil Modi |  | Complete Milestone 7: Email Outreach Automation with AI
+* 2026-03-04 01:59:49 +0400 | 06ad7b7 | Sahil Modi |  | Complete milestone 6: Google Workspace Authentication & Gmail Integration
+* 2026-03-02 22:20:04 +0400 | 8870e2a | Sahil Modi |  | Complete milestone 5: Polish & UX — Make It Professional
+* 2026-03-02 21:54:21 +0400 | a3915f6 | Sahil Modi |  | Complete milestone 4: Error Handling & Edge Cases
+* 2026-03-02 21:37:33 +0400 | 9ee6ab2 | Sahil Modi |  | Complete milestone 3: Data Persistence — Storage That Survives
+* 2026-03-02 21:10:06 +0400 | 6274387 | Sahil Modi |  | Complete milestone 2: Core Feature — AI-powered lead analysis with Groq
+* 2026-03-02 20:50:31 +0400 | 7520606 | Sahil Modi |  | Complete milestone 1: Base Scaffold — Entry Point & Navigation
+* 2026-03-02 20:40:22 +0400 | c2d9371 | Sahil Modi |  | Complete milestone 0: Project Setup & Repository Initialization
