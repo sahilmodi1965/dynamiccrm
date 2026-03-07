@@ -71,8 +71,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div style={{ padding: 24, fontFamily: 'system-ui', maxWidth: 1400, margin: '0 auto' }}>
-      <h1 style={{ marginBottom: 8 }}>Network Intelligence Dashboard</h1>
+    <div style={{ padding: 24, fontFamily: 'system-ui', background: '#f3f4f6', minHeight: '100vh', color: '#111827', fontFamily: 'system-ui', maxWidth: 1400, margin: '0 auto' }}>
+      <h1 style={{ marginBottom: 8, color: '#111827' }}>Network Intelligence Dashboard</h1>
       <p style={{ color: '#666', marginBottom: 24 }}>Company-level view of all outreach activity</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 32 }}>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
         <div>
-          <h2 style={{ marginBottom: 16 }}>Companies ({data.companies.length})</h2>
+          <h2 style={{ marginBottom: 16, color: '#111827' }}>Companies ({data.companies.length})</h2>
           {data.companies.map((company) => (
             <CompanyCard key={company.name} company={company} 
               expanded={expandedCompany === company.name}
@@ -177,7 +177,7 @@ function Sidebar({ activities, repPerformance }: {
 }) {
   return (
     <div>
-      <h2 style={{ marginBottom: 16 }}>Recent Activity</h2>
+      <h2 style={{ marginBottom: 16, color: '#111827' }}>Recent Activity</h2>
       <div style={{ background: '#f9fafb', borderRadius: 8, padding: 16, marginBottom: 24 }}>
         {activities.slice(0, 10).map((a, i) => (
           <div key={i} style={{ padding: '8px 0', borderBottom: i < 9 ? '1px solid #e5e7eb' : 'none' }}>
@@ -192,7 +192,7 @@ function Sidebar({ activities, repPerformance }: {
         ))}
       </div>
 
-      <h2 style={{ marginBottom: 16 }}>Rep Performance</h2>
+      <h2 style={{ marginBottom: 16, color: '#111827' }}>Rep Performance</h2>
       <div style={{ background: '#f9fafb', borderRadius: 8, padding: 16 }}>
         {Object.entries(repPerformance).map(([rep, stats]) => (
           <div key={rep} style={{ padding: '8px 0', borderBottom: '1px solid #e5e7eb' }}>

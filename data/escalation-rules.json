@@ -1,0 +1,22 @@
+{
+  "rules": [
+    {
+      "id": "rule_1772893162036",
+      "companyGroup": "techflow solutions",
+      "followUpDays": 3,
+      "escalationDays": 7,
+      "maxFollowUps": 3,
+      "createdAt": "2026-03-07T14:19:22.037Z",
+      "updatedAt": "2026-03-07T14:19:22.037Z"
+    },
+    {
+      "id": "rule_1772893162053",
+      "companyGroup": "cloudbridge inc",
+      "followUpDays": 7,
+      "escalationDays": 14,
+      "maxFollowUps": 2,
+      "createdAt": "2026-03-07T14:19:22.053Z",
+      "updatedAt": "2026-03-07T14:19:22.053Z"
+    }
+  ]
+}
