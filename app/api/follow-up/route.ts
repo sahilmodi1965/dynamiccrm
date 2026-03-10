@@ -111,17 +111,17 @@ export async function GET(request: Request) {
   
   // Sort by urgency
   const urgencyOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 }
-  followUpItems.sort((a, b) => urgencyOrder[a.urgency] - urgencyOrder[b.urgency])
+  followUpItems.sort((a: { urgency: string }, b: { urgency: string }) => urgencyOrder[a.urgency] - urgencyOrder[b.urgency])
   
   return NextResponse.json({
     success: true,
     stats: {
       total: followUpItems.length,
-      critical: followUpItems.filter(i => i.urgency === 'critical').length,
-      high: followUpItems.filter(i => i.urgency === 'high').length,
-      medium: followUpItems.filter(i => i.urgency === 'medium').length,
-      low: followUpItems.filter(i => i.urgency === 'low').length,
-      needsEscalation: followUpItems.filter(i => i.needsEscalation).length
+      critical: followUpItems.filter((i: { urgency: string }) => i.urgency === 'critical').length,
+      high: followUpItems.filter((i: { urgency: string }) => i.urgency === 'high').length,
+      medium: followUpItems.filter((i: { urgency: string }) => i.urgency === 'medium').length,
+      low: followUpItems.filter((i: { urgency: string }) => i.urgency === 'low').length,
+      needsEscalation: followUpItems.filter((i: { needsEscalation: boolean }) => i.needsEscalation).length
     },
     items: followUpItems
   })

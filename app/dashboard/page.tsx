@@ -71,7 +71,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div style={{ padding: 24, fontFamily: 'system-ui', background: '#f3f4f6', minHeight: '100vh', color: '#111827', fontFamily: 'system-ui', maxWidth: 1400, margin: '0 auto' }}>
+    <div style={{ padding: 24, fontFamily: 'system-ui', background: '#f3f4f6', minHeight: '100vh', color: '#111827', maxWidth: 1400, margin: '0 auto' }}>
       <h1 style={{ marginBottom: 8, color: '#111827' }}>Network Intelligence Dashboard</h1>
       <p style={{ color: '#666', marginBottom: 24 }}>Company-level view of all outreach activity</p>
 
