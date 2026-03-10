@@ -55,3 +55,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 }
+
+// GET: Retrieve all stored client tech stacks
+export async function GET() {
+  const { data, error } = await supabase
+    .from('client_tech_stacks')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  return NextResponse.json({ client_tech_stacks: data })
+}
