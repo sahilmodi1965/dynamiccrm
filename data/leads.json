@@ -83,6 +83,23 @@
       "isDecisionMaker": true,
       "excluded": false,
       "exclusionReason": null
+    },
+    {
+      "id": "lead_outdated_001",
+      "firstName": "Alex",
+      "lastName": "Thompson",
+      "name": "Alex Thompson",
+      "title": "VP of Marketing",
+      "company": "InnovateCorp",
+      "email": "alex@innovatecorp.example.com",
+      "linkedin": "https://linkedin.com/in/alexthompson",
+      "website": "https://innovatecorp.example.com",
+      "industry": "Enterprise Software",
+      "status": "new",
+      "createdAt": "2026-03-11T01:38:34.911Z",
+      "hierarchyScore": 80,
+      "hierarchyLevel": "VP",
+      "isDecisionMaker": true
     }
   ]
 }
