@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 
     // Build dashboard view
     const contactsWithValidation = profiles.map((profile: any) => {
-      const lead = leadsMap.get(profile.lead_id) || {}
+      const lead = leadsMap.get(profile.lead_id) || {} as any
       const leadConnections = connections.filter((c: any) => c.lead_id === profile.lead_id)
       const introOpportunities = leadConnections.filter((c: any) => c.can_intro)
 

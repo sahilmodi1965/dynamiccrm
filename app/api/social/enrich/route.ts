@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     if (enrichment.title_changed) {
       validationStatus = 'title_changed'
-      const daysAgo = Math.floor((Date.now() - new Date(enrichment.title_change_date).getTime()) / (1000 * 60 * 60 * 24))
+      const daysAgo = Math.floor((Date.now() - new Date(enrichment.title_change_date || Date.now()).getTime()) / (1000 * 60 * 60 * 24))
       validationMessage = 'Title changed from ' + enrichment.previous_title + ' to ' + enrichment.current_title + ' ' + daysAgo + ' days ago'
     }
 
